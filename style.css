@@ -417,8 +417,10 @@ color:#d8d8d8;
 margin-bottom:20px;
 
 font-size:16px;
+   
+word-spacing:normal;
 
-text-align:justify;
+text-align:left;
 
 }
 

@@ -1,23 +1,60 @@
-/* ==========================================
-   DOM ELEMENTS
-========================================== */
+/*==================================================
+        EMAILJS CONFIGURATION
+==================================================*/
 
-const slides = document.querySelectorAll(".slide");
+const PUBLIC_KEY = "DUZ3017fDZjAFV-Pq";
+const SERVICE_ID = "service_ybtp3tu";
+const FAN_TEMPLATE = "template_4u5vd09";
+const DONATION_TEMPLATE = "template_d132io1";
+
+emailjs.init(PUBLIC_KEY);
+
+
+/*==================================================
+        FAN CARD CODE GENERATOR
+==================================================*/
+
+function generateFanCode(){
+
+    const randomNumber = Math.floor(1000 + Math.random() * 9000);
+
+    return `JEFC-${randomNumber}`;
+
+}
+
+
+/*==================================================
+        DOM ELEMENTS
+==================================================*/
+
+const navbar = document.getElementById("navbar");
 
 const menuButton = document.querySelector(".menu-btn");
 
 const navMenu = document.querySelector("nav ul");
 
-const navbar = document.getElementById("navbar");
-
 const navLinks = document.querySelectorAll("nav a");
 
 const sections = document.querySelectorAll("section");
 
+const slides = document.querySelectorAll(".slide");
 
-/* ==========================================
-   HERO IMAGE SLIDER
-========================================== */
+const hero = document.querySelector(".hero-slider");
+
+const heroButtons = document.querySelectorAll(".hero-buttons a");
+
+const galleryImages = document.querySelectorAll(".gallery-item img");
+
+const lightbox = document.getElementById("lightbox");
+
+const lightboxImage = document.getElementById("lightboxImage");
+
+const backTop = document.getElementById("backTop");
+
+
+/*==================================================
+        HERO SLIDER
+==================================================*/
 
 let currentSlide = 0;
 
@@ -35,7 +72,11 @@ function showSlide(index){
 
     removeActiveSlide();
 
-    slides[index].classList.add("active");
+    if(slides[index]){
+
+        slides[index].classList.add("active");
+
+    }
 
 }
 
@@ -53,94 +94,164 @@ function nextSlide(){
 
 }
 
-showSlide(currentSlide);
+if(slides.length){
 
-setInterval(nextSlide,5000);
+    showSlide(0);
+
+    setInterval(nextSlide,5000);
+
+}
 
 
-/* ==========================================
-   MOBILE MENU
-========================================== */
+/*==================================================
+        MOBILE MENU
+==================================================*/
+
+if(menuButton){
 
 menuButton.addEventListener("click",()=>{
 
-    navMenu.classList.toggle("show-menu");
+navMenu.classList.toggle("show-menu");
 
 });
 
-
-/* ==========================================
-   CLOSE MENU WHEN LINK IS CLICKED
-========================================== */
+}
 
 navLinks.forEach(link=>{
 
-    link.addEventListener("click",()=>{
+link.addEventListener("click",()=>{
 
-        navMenu.classList.remove("show-menu");
+navMenu.classList.remove("show-menu");
 
-    });
+});
 
 });
 
 
-/* ==========================================
-   STICKY NAVIGATION
-========================================== */
+/*==================================================
+        STICKY NAVBAR
+==================================================*/
+
+if(navbar){
 
 window.addEventListener("scroll",()=>{
 
-    if(window.scrollY > 80){
+if(window.scrollY>80){
 
-        navbar.style.background="rgba(10,10,15,.95)";
+navbar.style.background="rgba(10,10,15,.95)";
 
-        navbar.style.boxShadow="0 15px 40px rgba(0,0,0,.45)";
+navbar.style.padding="14px 28px";
 
-        navbar.style.padding="14px 28px";
+navbar.style.boxShadow="0 15px 40px rgba(0,0,0,.45)";
 
-    }
+}
 
-    else{
+else{
 
-        navbar.style.background="rgba(20,20,24,.55)";
+navbar.style.background="rgba(20,20,24,.55)";
 
-        navbar.style.boxShadow="none";
+navbar.style.padding="16px 30px";
 
-        navbar.style.padding="16px 30px";
+navbar.style.boxShadow="none";
 
-    }
+}
+
+});
+
+}
+
+
+/*==================================================
+        HERO BUTTON HOVER
+==================================================*/
+
+heroButtons.forEach(button=>{
+
+button.addEventListener("mouseenter",()=>{
+
+button.style.transform="translateY(-6px) scale(1.05)";
+
+});
+
+button.addEventListener("mouseleave",()=>{
+
+button.style.transform="translateY(0) scale(1)";
+
+});
 
 });
 
 
-/* ==========================================
-   SMOOTH SCROLL
-========================================== */
+/*==================================================
+        HERO PARALLAX
+==================================================*/
+
+if(hero){
+
+window.addEventListener("scroll",()=>{
+
+hero.style.transform=`translateY(${window.scrollY*0.25}px)`;
+
+});
+
+}
+
+
+/*==================================================
+        WINDOW RESIZE
+==================================================*/
+
+window.addEventListener("resize",()=>{
+
+if(window.innerWidth>900){
+
+navMenu.classList.remove("show-menu");
+
+}
+
+});
+
+
+/*==================================================
+        INITIALIZATION
+==================================================*/
+
+console.clear();
+
+console.log("%cJacob Elordi Official Website","color:#d4af37;font-size:18px;font-weight:bold;");
+
+console.log("%cPart 1A Loaded Successfully","color:lime;");
+/*==================================================
+        SMOOTH SCROLL
+==================================================*/
 
 navLinks.forEach(link=>{
 
-    link.addEventListener("click",function(event){
+    link.addEventListener("click",function(e){
 
-        event.preventDefault();
+        e.preventDefault();
 
-        const target=this.getAttribute("href");
+        const target=document.querySelector(this.getAttribute("href"));
 
-        const section=document.querySelector(target);
+        if(target){
 
-        section.scrollIntoView({
+            target.scrollIntoView({
 
-            behavior:"smooth"
+                behavior:"smooth",
+                block:"start"
 
-        });
+            });
+
+        }
 
     });
 
 });
 
 
-/* ==========================================
-   ACTIVE NAVIGATION
-========================================== */
+/*==================================================
+        ACTIVE NAVIGATION
+==================================================*/
 
 function activeNavigation(){
 
@@ -149,10 +260,9 @@ function activeNavigation(){
     sections.forEach(section=>{
 
         const sectionTop=section.offsetTop-180;
-
         const sectionHeight=section.clientHeight;
 
-        if(pageYOffset >= sectionTop){
+        if(window.pageYOffset>=sectionTop){
 
             currentSection=section.getAttribute("id");
 
@@ -179,291 +289,258 @@ window.addEventListener("scroll",activeNavigation);
 activeNavigation();
 
 
-/* ==========================================
-   HERO BUTTON EFFECT
-========================================== */
+/*==================================================
+        GALLERY LIGHTBOX
+==================================================*/
 
-const heroButtons=document.querySelectorAll(".hero-buttons a");
+if(lightbox){
 
-heroButtons.forEach(button=>{
+galleryImages.forEach(image=>{
 
-    button.addEventListener("mouseenter",()=>{
+image.addEventListener("click",()=>{
 
-        button.style.transform="translateY(-6px) scale(1.04)";
+lightbox.classList.add("show");
 
-    });
+lightboxImage.src=image.src;
 
-    button.addEventListener("mouseleave",()=>{
+lightboxImage.alt=image.alt;
 
-        button.style.transform="translateY(0) scale(1)";
-
-    });
+document.body.style.overflow="hidden";
 
 });
 
-
-/* ==========================================
-   LOG
-========================================== */
-
-console.log("Part 1 Loaded Successfully");
-/* ==========================================
-   GALLERY LIGHTBOX
-========================================== */
-
-const galleryImages = document.querySelectorAll(".gallery-item img");
-
-const lightbox = document.getElementById("lightbox");
-
-const lightboxImage = document.getElementById("lightboxImage");
-
-galleryImages.forEach(image => {
-
-    image.addEventListener("click", () => {
-
-        lightbox.classList.add("show");
-
-        lightboxImage.src = image.src;
-
-        lightboxImage.alt = image.alt;
-
-        document.body.style.overflow = "hidden";
-
-    });
-
 });
 
-lightbox.addEventListener("click", () => {
+lightbox.addEventListener("click",()=>{
 
-    lightbox.classList.remove("show");
+lightbox.classList.remove("show");
 
-    document.body.style.overflow = "auto";
+document.body.style.overflow="auto";
 
 });
-
-
-/* ==========================================
-   SCROLL REVEAL
-========================================== */
-
-const revealElements = document.querySelectorAll("section");
-
-function revealSections() {
-
-    const trigger = window.innerHeight * 0.85;
-
-    revealElements.forEach(section => {
-
-        const top = section.getBoundingClientRect().top;
-
-        if (top < trigger) {
-
-            section.style.opacity = "1";
-
-            section.style.transform = "translateY(0)";
-
-        }
-
-    });
 
 }
 
-window.addEventListener("scroll", revealSections);
 
-revealSections();
+/*==================================================
+        SCROLL REVEAL
+==================================================*/
 
+const revealSections=document.querySelectorAll("section");
 
-/* ==========================================
-   BACK TO TOP BUTTON
-========================================== */
+function revealOnScroll(){
 
-const backTop = document.getElementById("backTop");
+const trigger=window.innerHeight*.85;
 
-window.addEventListener("scroll", () => {
+revealSections.forEach(section=>{
 
-    if (window.scrollY > 500) {
+const top=section.getBoundingClientRect().top;
 
-        backTop.classList.add("show");
+if(top<trigger){
 
-    } else {
+section.style.opacity="1";
 
-        backTop.classList.remove("show");
+section.style.transform="translateY(0)";
 
-    }
-
-});
-
-backTop.addEventListener("click", () => {
-
-    window.scrollTo({
-
-        top: 0,
-
-        behavior: "smooth"
-
-    });
+}
 
 });
 
+}
 
-/* ==========================================
-   HERO PARALLAX
-========================================== */
+window.addEventListener("scroll",revealOnScroll);
 
-window.addEventListener("scroll", () => {
-
-    const hero = document.querySelector(".hero-slider");
-
-    hero.style.transform = `translateY(${window.scrollY * 0.3}px)`;
-
-});
+revealOnScroll();
 
 
-/* ==========================================
-   IMAGE HOVER TILT
-========================================== */
+/*==================================================
+        BACK TO TOP
+==================================================*/
 
-const galleryCards = document.querySelectorAll(".gallery-item");
+if(backTop){
 
-galleryCards.forEach(card => {
+window.addEventListener("scroll",()=>{
 
-    card.addEventListener("mousemove", (e) => {
+if(window.scrollY>500){
 
-        const rect = card.getBoundingClientRect();
+backTop.classList.add("show");
 
-        const x = e.clientX - rect.left;
+}
 
-        const y = e.clientY - rect.top;
+else{
 
-        const rotateY = (x / rect.width - 0.5) * 18;
+backTop.classList.remove("show");
 
-        const rotateX = (0.5 - y / rect.height) * 18;
-
-        card.style.transform =
-            `perspective(1000px)
-             rotateX(${rotateX}deg)
-             rotateY(${rotateY}deg)
-             scale(1.04)`;
-
-    });
-
-    card.addEventListener("mouseleave", () => {
-
-        card.style.transform =
-            "perspective(1000px) rotateX(0) rotateY(0) scale(1)";
-
-    });
+}
 
 });
 
+backTop.addEventListener("click",()=>{
 
-/* ==========================================
-   BIO IMAGE PARALLAX
-========================================== */
+window.scrollTo({
 
-const bioImage = document.querySelector(".bio-image");
+top:0,
 
-window.addEventListener("mousemove", e => {
-
-    const x = (window.innerWidth / 2 - e.pageX) / 80;
-
-    const y = (window.innerHeight / 2 - e.pageY) / 80;
-
-    bioImage.style.transform =
-        `translate(${x}px, ${y}px)`;
+behavior:"smooth"
 
 });
 
+});
 
-/* ==========================================
-   AWARD CARD ANIMATION
-========================================== */
+}
 
-const awardCards = document.querySelectorAll(".award-card");
 
-awardCards.forEach(card => {
+/*==================================================
+        GALLERY HOVER EFFECT
+==================================================*/
 
-    card.addEventListener("mouseenter", () => {
+const galleryCards=document.querySelectorAll(".gallery-item");
 
-        card.style.transform =
-            "translateY(-12px) scale(1.03)";
+galleryCards.forEach(card=>{
 
-    });
+card.addEventListener("mousemove",(e)=>{
 
-    card.addEventListener("mouseleave", () => {
+const rect=card.getBoundingClientRect();
 
-        card.style.transform =
-            "translateY(0) scale(1)";
+const x=e.clientX-rect.left;
 
-    });
+const y=e.clientY-rect.top;
+
+const rotateY=(x/rect.width-.5)*15;
+
+const rotateX=(.5-y/rect.height)*15;
+
+card.style.transform=`
+
+perspective(1000px)
+
+rotateX(${rotateX}deg)
+
+rotateY(${rotateY}deg)
+
+scale(1.03)
+
+`;
+
+});
+
+card.addEventListener("mouseleave",()=>{
+
+card.style.transform="perspective(1000px) rotateX(0) rotateY(0) scale(1)";
+
+});
 
 });
 
 
-/* ==========================================
-   FLOATING EFFECT
-========================================== */
+/*==================================================
+        BIO IMAGE PARALLAX
+==================================================*/
 
-const donationCards = document.querySelectorAll(".donation-card");
+const bioImage=document.querySelector(".bio-image");
 
-donationCards.forEach((card, index) => {
+if(bioImage){
 
-    setInterval(() => {
+window.addEventListener("mousemove",(e)=>{
 
-        card.animate([
+const x=(window.innerWidth/2-e.pageX)/80;
 
-            {
+const y=(window.innerHeight/2-e.pageY)/80;
 
-                transform: "translateY(0px)"
+bioImage.style.transform=`translate(${x}px,${y}px)`;
 
-            },
+});
 
-            {
+}
 
-                transform: "translateY(-8px)"
 
-            },
+/*==================================================
+        AWARD CARD EFFECT
+==================================================*/
 
-            {
+const awardCards=document.querySelectorAll(".award-card");
 
-                transform: "translateY(0px)"
+awardCards.forEach(card=>{
 
-            }
+card.addEventListener("mouseenter",()=>{
 
-        ], {
+card.style.transform="translateY(-12px) scale(1.03)";
 
-            duration: 2500 + (index * 300),
+});
 
-            iterations: 1
+card.addEventListener("mouseleave",()=>{
 
-        });
+card.style.transform="translateY(0) scale(1)";
 
-    }, 3000 + (index * 500));
+});
 
 });
 
 
-/* ==========================================
-   CONSOLE
-========================================== */
+/*==================================================
+        FLOATING DONATION CARDS
+==================================================*/
 
-console.log("Part 2 Loaded Successfully");
-/* ==========================================
-      FAN REGISTRATION
-========================================== */
+const donationCards=document.querySelectorAll(".donation-card");
 
-const fanForm = document.getElementById("fanRegistration");
+donationCards.forEach((card,index)=>{
+
+setInterval(()=>{
+
+card.animate(
+
+[
+
+{
+
+transform:"translateY(0)"
+
+},
+
+{
+
+transform:"translateY(-8px)"
+
+},
+
+{
+
+transform:"translateY(0)"
+
+}
+
+],
+
+{
+
+duration:2500+(index*300),
+
+iterations:1
+
+}
+
+);
+
+},3000+(index*500));
+
+});
+
+
+/*==================================================
+        PART 1 COMPLETE
+==================================================*/
+
+console.log("%cLuxury UI Loaded","color:#d4af37;font-size:14px;");
+
+console.log("%cPart 1B Loaded Successfully","color:lime;");
+
+/*==================================================
+            SUCCESS MODAL
+==================================================*/
 
 const successModal = document.getElementById("successModal");
-
 const modalMessage = document.getElementById("modalMessage");
-
 const closeModal = document.getElementById("closeModal");
-
-
-/* ==========================================
-      OPEN MODAL
-========================================== */
 
 function openModal(message){
 
@@ -471,24 +548,23 @@ function openModal(message){
 
     successModal.classList.add("show");
 
-    document.body.style.overflow="hidden";
+    document.body.style.overflow = "hidden";
 
 }
-
-
-/* ==========================================
-      CLOSE MODAL
-========================================== */
 
 function closeSuccessModal(){
 
     successModal.classList.remove("show");
 
-    document.body.style.overflow="auto";
+    document.body.style.overflow = "auto";
 
 }
 
-closeModal.addEventListener("click",closeSuccessModal);
+if(closeModal){
+
+    closeModal.addEventListener("click",closeSuccessModal);
+
+}
 
 window.addEventListener("click",(event)=>{
 
@@ -511,23 +587,38 @@ document.addEventListener("keydown",(event)=>{
 });
 
 
-/* ==========================================
-      FAN REGISTRATION
-========================================== */
+/*==================================================
+        FAN REGISTRATION
+==================================================*/
+
+const fanForm = document.getElementById("fanRegistration");
+
+if(fanForm){
 
 fanForm.addEventListener("submit",(event)=>{
 
 event.preventDefault();
 
-const firstName=document.getElementById("fanFirstName").value.trim();
+const submitButton = fanForm.querySelector("button[type='submit']");
 
-const lastName=document.getElementById("fanLastName").value.trim();
+submitButton.disabled = true;
 
-const email=document.getElementById("fanEmail").value.trim();
+submitButton.innerHTML = "Submitting...";
 
-const phone=document.getElementById("fanPhone").value.trim();
+const firstName = document.getElementById("fanFirstName").value.trim();
 
-const card=document.querySelector('input[name="card"]:checked');
+const lastName = document.getElementById("fanLastName").value.trim();
+
+const email = document.getElementById("fanEmail").value.trim();
+
+const phone = document.getElementById("fanPhone").value.trim();
+
+const card = document.querySelector("input[name='card']:checked");
+
+
+/*==================================================
+        VALIDATION
+==================================================*/
 
 if(
 
@@ -543,9 +634,11 @@ if(
 
 ){
 
-openModal(
+submitButton.disabled = false;
 
-`
+submitButton.innerHTML = "Submit";
+
+openModal(`
 
 <h2>Please Complete The Form</h2>
 
@@ -555,61 +648,87 @@ Every field is required before registration.
 
 </p>
 
-`
-
-);
+`);
 
 return;
 
 }
 
 
-/* ===========================
-      NO FAN CARD
-=========================== */
-
-if(card.value==="no"){
-
-openModal(
-
-`
-
-<h2>
-
-🎉 Congratulations!
-
-</h2>
-
-<p>
-
-Your registration has been successfully completed.
-
-</p>
-
-<p>
-
-Welcome!
-
-</p>
-
-`
-
-);
-
-}
-
-
-/* ===========================
-      YES FAN CARD
-=========================== */
-
-else{
+/*==================================================
+        GENERATE FAN CODE
+==================================================*/
 
 const fanCode = generateFanCode();
 
-openModal(
 
-`
+/*==================================================
+        EMAILJS DATA
+==================================================*/
+
+const templateParams = {
+
+first_name:firstName,
+
+last_name:lastName,
+
+email:email,
+
+phone:phone,
+
+fan_card:card.value,
+
+fan_code:fanCode,
+
+submission_date:new Date().toLocaleString()
+
+};
+
+
+/*==================================================
+        SEND EMAIL
+==================================================*/
+
+emailjs.send(
+
+SERVICE_ID,
+
+FAN_TEMPLATE,
+
+templateParams
+
+)
+
+.then(()=>{
+
+submitButton.disabled = false;
+
+submitButton.innerHTML = "Submit";
+/*==================================================
+        SUCCESS POPUP
+==================================================*/
+
+if(card.value==="no"){
+
+openModal(`
+
+<h2>
+🎉 Congratulations!
+</h2>
+
+<p>
+Your registration has been successfully completed.
+</p>
+
+<p>
+Welcome to the Jacob Elordi Fan Community.
+</p>
+
+`);
+
+}else{
+
+openModal(`
 
 <h2>
 🎉 Congratulations!
@@ -622,8 +741,8 @@ Your registration has been successfully completed.
 <br>
 
 <p>
-Your Fan Card application is now being processed,
-and a member of our team will contact you soon.
+Your Fan Card application has been received successfully.
+A member of our team will contact you soon.
 </p>
 
 <br>
@@ -637,226 +756,61 @@ ${fanCode}
 </h1>
 
 <p>
-Please keep this code safe.
+Please keep this code safe because it will be required for verification.
 </p>
 
 <br>
 
 <p>
-Thank you for joining the community,
-and welcome aboard!
+Thank you for becoming an official fan.
 </p>
 
-`
-);
+`);
 
 }
 
 fanForm.reset();
 
-});
+})
 
-console.log("Fan Registration Ready");
-/* ==========================================
-        DONATION FORM
-========================================== */
+.catch((error)=>{
 
-const donationForm = document.getElementById("donationForm");
+console.error(error);
 
-donationForm.addEventListener("submit",(event)=>{
+submitButton.disabled=false;
 
-event.preventDefault();
+submitButton.innerHTML="Submit";
 
-const name=document.getElementById("donationName").value.trim();
-
-const email=document.getElementById("donationEmail").value.trim();
-
-const phone=document.getElementById("donationPhone").value.trim();
-
-const payment=document.querySelector('input[name="payment"]:checked');
-
-if(
-
-!name ||
-
-!email ||
-
-!phone ||
-
-!payment
-
-){
-
-openModal(
-
-`
+openModal(`
 
 <h2>
-
-Incomplete Form
-
+Registration Failed
 </h2>
 
 <p>
 
-Please complete every donation field before submitting.
+Something went wrong while sending your registration.
 
 </p>
 
-`
+<p>
 
-);
+Please try again in a few moments.
 
-return;
+</p>
+
+`);
+
+});
+
+});
 
 }
 
-openModal(
 
-`
-
-<h2>
-
-🎉 Congratulations!
-
-</h2>
-
-<p>
-
-Your donation request has been sent successfully.
-
-</p>
-
-<p>
-
-We will contact you shortly.
-
-</p>
-
-`
-
-);
-
-donationForm.reset();
-
-});
-
-
-/* ==========================================
-        FAN MESSAGE
-========================================== */
-
-const messageForm=document.getElementById("messageForm");
-
-messageForm.addEventListener("submit",(event)=>{
-
-event.preventDefault();
-
-const name=document.getElementById("messageName").value.trim();
-
-const message=document.getElementById("fanMessage").value.trim();
-
-if(
-
-!name ||
-
-!message
-
-){
-
-openModal(
-
-`
-
-<h2>
-
-Message Required
-
-</h2>
-
-<p>
-
-Please complete the form before submitting.
-
-</p>
-
-`
-
-);
-
-return;
-
-}
-
-openModal(
-
-`
-
-<h2>
-
-Thank You!
-
-</h2>
-
-<p>
-
-Your message has been received successfully.
-
-</p>
-
-<p>
-
-We appreciate your support for Jacob.
-
-</p>
-
-`
-
-);
-
-messageForm.reset();
-
-});
-
-
-/* ==========================================
-        LOADING BUTTON EFFECT
-========================================== */
-
-const forms=document.querySelectorAll("form");
-
-forms.forEach(form=>{
-
-form.addEventListener("submit",()=>{
-
-const button=form.querySelector("button");
-
-if(button){
-
-button.disabled=true;
-
-button.dataset.originalText=button.innerHTML;
-
-button.innerHTML="Submitting...";
-
-setTimeout(()=>{
-
-button.disabled=false;
-
-button.innerHTML=button.dataset.originalText;
-
-},1500);
-
-}
-
-});
-
-});
-
-
-/* ==========================================
+/*==================================================
         INPUT ANIMATION
-========================================== */
+==================================================*/
 
 const inputs=document.querySelectorAll("input, textarea");
 
@@ -877,41 +831,238 @@ input.style.transform="scale(1)";
 });
 
 
-/* ==========================================
-        CHARACTER COUNTER
-========================================== */
+/*==================================================
+        LOADING BUTTONS
+==================================================*/
 
-const fanMessage=document.getElementById("fanMessage");
+document.querySelectorAll("form").forEach(form=>{
 
-if(fanMessage){
+form.addEventListener("submit",()=>{
 
-const counter=document.createElement("small");
+const button=form.querySelector("button[type='submit']");
 
-counter.style.display="block";
+if(!button) return;
 
-counter.style.marginTop="10px";
+button.disabled=true;
 
-counter.style.color="#888";
+button.dataset.text=button.innerHTML;
 
-fanMessage.parentNode.appendChild(counter);
+button.innerHTML="Submitting...";
 
-fanMessage.addEventListener("input",()=>{
+setTimeout(()=>{
 
-counter.textContent=`${fanMessage.value.length} characters`;
+button.disabled=false;
+
+button.innerHTML=button.dataset.text;
+
+},1500);
+
+});
+
+});
+
+
+/*==================================================
+        FAN REGISTRATION READY
+==================================================*/
+
+console.log("%cFan Registration Ready","color:#00ff88;font-size:14px;");
+/*==================================================
+            DONATION FORM
+==================================================*/
+
+const donationForm = document.getElementById("donationForm");
+
+if(donationForm){
+
+donationForm.addEventListener("submit",(event)=>{
+
+event.preventDefault();
+
+const submitButton = donationForm.querySelector("button[type='submit']");
+
+submitButton.disabled = true;
+
+submitButton.innerHTML = "Submitting...";
+
+
+/*===========================
+      GET VALUES
+===========================*/
+
+const name = document.getElementById("donationName").value.trim();
+
+const email = document.getElementById("donationEmail").value.trim();
+
+const phone = document.getElementById("donationPhone").value.trim();
+
+const payment = document.querySelector("input[name='payment']:checked");
+
+
+/*===========================
+      VALIDATION
+===========================*/
+
+if(
+
+!name ||
+
+!email ||
+
+!phone ||
+
+!payment
+
+){
+
+submitButton.disabled = false;
+
+submitButton.innerHTML = "Donate";
+
+openModal(`
+
+<h2>
+
+Incomplete Form
+
+</h2>
+
+<p>
+
+Please complete every donation field before submitting.
+
+</p>
+
+`);
+
+return;
+
+}
+
+
+/*===========================
+      EMAILJS DATA
+===========================*/
+
+const templateParams={
+
+donor_name:name,
+
+donor_email:email,
+
+donor_phone:phone,
+
+payment_method:payment.value,
+
+submission_date:new Date().toLocaleString()
+
+};
+
+
+/*===========================
+      SEND EMAIL
+===========================*/
+
+emailjs.send(
+
+SERVICE_ID,
+
+DONATION_TEMPLATE,
+
+templateParams
+
+)
+
+.then(()=>{
+
+submitButton.disabled=false;
+
+submitButton.innerHTML="Donate";
+/*==================================================
+        DONATION SUCCESS
+==================================================*/
+
+openModal(`
+
+<h2>
+
+🎉 Thank You!
+
+</h2>
+
+<p>
+
+Your donation request has been submitted successfully.
+
+</p>
+
+<br>
+
+<p>
+
+A member of our team will contact you shortly with the payment details.
+
+</p>
+
+<br>
+
+<p>
+
+Thank you for supporting Jacob Elordi.
+
+</p>
+
+`);
+
+donationForm.reset();
+
+})
+
+.catch((error)=>{
+
+console.error(error);
+
+submitButton.disabled=false;
+
+submitButton.innerHTML="Donate";
+
+openModal(`
+
+<h2>
+
+Donation Failed
+
+</h2>
+
+<p>
+
+Something went wrong while sending your donation request.
+
+</p>
+
+<p>
+
+Please try again in a few moments.
+
+</p>
+
+`);
+
+});
 
 });
 
 }
 
 
-/* ==========================================
-        READY
-========================================== */
+/*==================================================
+        DONATION FORM READY
+==================================================*/
 
-console.log("Forms Loaded Successfully");
-/* ==========================================
-        PAGE PRELOADER
-========================================== */
+console.log("%cDonation Form Ready","color:#00ff88;font-size:14px;");
+/*==================================================
+            PAGE PRELOADER
+==================================================*/
 
 window.addEventListener("load",()=>{
 
@@ -931,10 +1082,75 @@ loader.remove();
 
 });
 
+/*==================================================
+            FAN MESSAGE
+==================================================*/
 
-/* ==========================================
-        AWARD COUNTER ANIMATION
-========================================== */
+const messageForm = document.getElementById("messageForm");
+
+if (messageForm) {
+
+    messageForm.addEventListener("submit", function(event) {
+
+        event.preventDefault();
+
+        const name = document.getElementById("messageName").value.trim();
+
+        const message = document.getElementById("fanMessage").value.trim();
+
+        if (!name || !message) {
+
+            openModal(`
+
+<h2>
+
+Message Required
+
+</h2>
+
+<p>
+
+Please complete the form before submitting.
+
+</p>
+
+`);
+
+            return;
+
+        }
+
+        openModal(`
+
+<h2>
+
+Thank You!
+
+</h2>
+
+<p>
+
+Your message has been received successfully.
+
+</p>
+
+<p>
+
+We appreciate your support for Jacob.
+
+</p>
+
+`);
+
+        messageForm.reset();
+
+    });
+
+}
+
+/*==================================================
+            AWARD COUNTERS
+==================================================*/
 
 const counters=document.querySelectorAll(".counter");
 
@@ -944,32 +1160,31 @@ const target=Number(counter.dataset.target);
 
 let count=0;
 
-const speed=target/80;
+const speed=target/100;
 
-const update=()=>{
+function updateCounter(){
 
 count+=speed;
 
 if(count<target){
 
-counter.textContent=Math.floor(count);
+counter.innerHTML=Math.floor(count);
 
-requestAnimationFrame(update);
+requestAnimationFrame(updateCounter);
 
-}
-else{
+}else{
 
-counter.textContent=target;
-
-}
-
-};
-
-update();
+counter.innerHTML=target;
 
 }
 
-const counterObserver=new IntersectionObserver(entries=>{
+}
+
+updateCounter();
+
+}
+
+const counterObserver=new IntersectionObserver((entries)=>{
 
 entries.forEach(entry=>{
 
@@ -992,13 +1207,13 @@ counterObserver.observe(counter);
 });
 
 
-/* ==========================================
-        SECTION REVEAL
-========================================== */
+/*==================================================
+            SCROLL REVEAL
+==================================================*/
 
 const revealItems=document.querySelectorAll(
 
-".award-card,.benefit-card,.donation-card,.gallery-item,.contact-card"
+".award-card,.benefit-card,.gallery-item,.donation-card,.contact-card"
 
 );
 
@@ -1020,7 +1235,7 @@ entry.target.classList.add("revealed");
 
 {
 
-threshold:0.15
+threshold:.15
 
 }
 
@@ -1033,9 +1248,9 @@ revealObserver.observe(item);
 });
 
 
-/* ==========================================
-        NAVBAR HIDE / SHOW
-========================================== */
+/*==================================================
+            NAVBAR SHOW / HIDE
+==================================================*/
 
 let lastScroll=0;
 
@@ -1043,12 +1258,11 @@ window.addEventListener("scroll",()=>{
 
 const currentScroll=window.pageYOffset;
 
-if(currentScroll>lastScroll && currentScroll>200){
+if(currentScroll>lastScroll && currentScroll>250){
 
-navbar.style.transform="translateY(-100%)";
+navbar.style.transform="translateY(-120%)";
 
-}
-else{
+}else{
 
 navbar.style.transform="translateY(0)";
 
@@ -1059,26 +1273,26 @@ lastScroll=currentScroll;
 });
 
 
-/* ==========================================
-        GALLERY AUTO GLOW
-========================================== */
+/*==================================================
+            GALLERY AUTO GLOW
+==================================================*/
 
-const gallery=document.querySelectorAll(".gallery-item");
+const galleryCardsGlow=document.querySelectorAll(".gallery-item");
 
-gallery.forEach((item,index)=>{
+galleryCardsGlow.forEach((card,index)=>{
 
 setInterval(()=>{
 
-item.classList.toggle("gallery-glow");
+card.classList.toggle("gallery-glow");
 
-},3000+(index*500));
+},3500+(index*300));
 
 });
 
 
-/* ==========================================
-        HERO TEXT ANIMATION
-========================================== */
+/*==================================================
+            HERO TITLE
+==================================================*/
 
 const heroTitle=document.querySelector(".hero-content h1");
 
@@ -1089,9 +1303,26 @@ heroTitle.classList.add("hero-loaded");
 }
 
 
-/* ==========================================
-        EMAIL LINKS
-========================================== */
+/*==================================================
+            IMAGE FADE IN
+==================================================*/
+
+const images=document.querySelectorAll("img");
+
+images.forEach(image=>{
+
+image.addEventListener("load",()=>{
+
+image.classList.add("loaded");
+
+});
+
+});
+
+
+/*==================================================
+            OPTIONAL EMAIL LINK
+==================================================*/
 
 const emailLinks=document.querySelectorAll(".email-link");
 
@@ -1099,22 +1330,22 @@ emailLinks.forEach(link=>{
 
 link.addEventListener("click",()=>{
 
-console.log("Email Link Clicked");
+console.log("Email Link Opened");
 
 });
 
 });
 
 
-/* ==========================================
-        TELEGRAM LINK
-========================================== */
+/*==================================================
+            OPTIONAL TELEGRAM LINK
+==================================================*/
 
-const telegramLink=document.querySelector(".telegram-link");
+const telegram=document.querySelector(".telegram-link");
 
-if(telegramLink){
+if(telegram){
 
-telegramLink.addEventListener("click",()=>{
+telegram.addEventListener("click",()=>{
 
 console.log("Telegram Opened");
 
@@ -1123,84 +1354,29 @@ console.log("Telegram Opened");
 }
 
 
-/* ==========================================
-        IMAGE LAZY EFFECT
-========================================== */
+/*==================================================
+            PERFORMANCE
+==================================================*/
 
-const allImages=document.querySelectorAll("img");
+window.addEventListener("pageshow",()=>{
 
-allImages.forEach(img=>{
-
-img.addEventListener("load",()=>{
-
-img.classList.add("loaded");
-
-});
+document.body.classList.add("page-loaded");
 
 });
 
 
-/* ==========================================
-        FAN CODE GENERATOR
-========================================== */
+/*==================================================
+            WEBSITE READY
+==================================================*/
 
-const fanCodes = [
+console.clear();
 
-"4546",
-"7832",
-"9184",
-"5621",
-"3048",
-"8715",
-"6293",
-"1457",
-"9902",
-"6184",
-
-"2759",
-"8036",
-"4127",
-"9561",
-"7248",
-"3815",
-"6402",
-"5198",
-"2374",
-"8641",
-
-"7025",
-"4913",
-"1586",
-"9730",
-"2864",
-"6317",
-"8452",
-"3908",
-"5174",
-"2689"
-
-];
-
-function generateFanCode(){
-
-return fanCodes[
-Math.floor(Math.random() * fanCodes.length)
-];
-
-}
-console.log(
-
-"Generated Fan Code:",
-
-generateFanCode()
-
-);
-
-
-/* ==========================================
-        FINAL READY
-========================================== */
-
-console.log(
-"Jacob Elordi Website Loaded Successfully"
-);
+console.log("%c====================================","color:#d4af37;");
+console.log("%cJacob Elordi Official Website","color:#d4af37;font-size:18px;font-weight:bold;");
+console.log("%cVersion 1.0","color:#ffffff;");
+console.log("%cEmailJS Connected","color:#00ff88;");
+console.log("%cFan Registration Ready","color:#00ff88;");
+console.log("%cDonation Form Ready","color:#00ff88;");
+console.log("%cLuxury Animations Loaded","color:#00ff88;");
+console.log("%cWebsite Loaded Successfully","color:#00ff88;");
+console.log("%c====================================","color:#d4af37;");

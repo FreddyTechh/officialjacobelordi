@@ -754,7 +754,7 @@ Join Fan Club
 
             </div>
 
-            <button>
+            <button type="submit">
 
                 Submit Donation Request
 
@@ -854,27 +854,25 @@ Join Fan Club
 
     </div>
 
-    <form id="messageForm">
+  <form id="messageForm">
 
-        <input
-       type="text"
-       id="messageName"
-       placeholder="Your Name"
-       require>
+    <input
+        type="text"
+        id="messageName"
+        placeholder="Your Name"
+        required>
 
-        <textarea
+    <textarea
         id="fanMessage"
         rows="8"
         placeholder="Write your message..."
         required></textarea>
 
-        <button>
+    <button type="submit">
+        Send Message
+    </button>
 
-            Send Message
-
-        </button>
-
-    </form>
+</form>
 
 </section>
 
@@ -983,7 +981,7 @@ Join Fan Club
 <button class="back-top" id="backTop">
     ↑
 </button>
-
+<script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
 <script src="script.js"></script>
 
 

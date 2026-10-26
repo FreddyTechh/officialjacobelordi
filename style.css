@@ -42,7 +42,6 @@ body{
     color:var(--text);
     overflow-x:hidden;
     line-height:1.8;
-   display: none;
 }
 
 /* ===========================
